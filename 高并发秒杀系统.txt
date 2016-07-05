@@ -1,0 +1,45 @@
+1、Maven构建项目
+mvn archetype:generate -DgroupId=org.seckill -DartifactId=seckill -DarchetypeArtifactId=maven-archetype-webapp -DarchetypeCatalog=internal
+遇到的问题：
+	1）mvn archetype:create命令已经失效，解决：create is deprecated in maven 3.0.5 and beyond，在maven3.0.5以上版本舍弃了create，使用generate生成项目
+	2）Generating project in Interactive mode卡死，-X 打开debug模式重试了一次：
+		mvnarchetype:generate -X -DgroupId=org.sonatype.mavenbook.simple -DartifactId=simple -Dpackage=org.sonatype.mavenbook -Dversion=1.0-SNAPSHOT
+		原来是卡在这里了：
+		[DEBUG] -- end configuration --
+		[INFO] Generating project in Interactive mode
+		[DEBUG] Searching for remote catalog: http://repo1.maven.org/maven2/archetype-catalog.xml
+		加个参数 -DarchetypeCatalog=internal 让它不要从远程服务器上取catalog
+	3）The desired archetype does not exist (org.apache.maven.archetypes:maven-archetype-webap:1.0)，解决：敲错了webapp敲成webap了（摔！
+	4）Maven默认构建工程中的web.xml使用的servlet版本太低，用的是2.3版本的。2.3版本servlet默认Jsp中el表达式是不工作的。需要切换到高版本servlet。
+		解决办法是在tomcat默认项目中copy其web.xml头文件到Maven项目中替换：
+		
+		原文件：
+		<!DOCTYPE web-app PUBLIC
+	 "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	 "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+	<web-app>
+	  <display-name>Archetype Created Web Application</display-name>
+	</web-app>
+		替换为：
+	<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+						  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	  version="3.0"
+	  metadata-complete="true">
+	  
+	5）项目工程报错：Dynamic Web Module 3.0 requires Java 1.6 or newer.
+		解决方法：在项目的pom.xml的<build></build>标签中加入： 
+		<plugins>  
+			<plugin>  
+				<groupId>org.apache.maven.plugins</groupId>  
+				<artifactId>maven-compiler-plugin</artifactId>  
+				<version>2.3.2</version>  
+				<configuration>  
+					<source>1.6</source>  
+					<target>1.6</target>  
+				</configuration>  
+			</plugin>  
+		</plugins>  
+		项目构建完成后在项目文件夹上点右键，选择Maven->Update Project Configuration，问题解决。
