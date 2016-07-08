@@ -43,3 +43,4 @@ mvn archetype:generate -DgroupId=org.seckill -DartifactId=seckill -DarchetypeArt
 			</plugin>  
 		</plugins>  
 		项目构建完成后在项目文件夹上点右键，选择Maven->Update Project Configuration，问题解决。
+	6）mysql建表：字段名要用`不能用单引号'！（摔！ 
