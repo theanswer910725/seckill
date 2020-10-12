@@ -34,7 +34,7 @@
       <!-- 3.0junit默认使用编程方式，4.0默认使用注解方式 -->
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
     <!-- 补全项目依赖 -->
