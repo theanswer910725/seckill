@@ -141,7 +141,7 @@
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-webmvc</artifactId>
-    	<version>4.1.6.RELEASE</version>
+    	<version>5.2.20.RELEASE</version>
     </dependency>
     <!-- 5.4 Spring test相关依赖 -->
   	<dependency>
